@@ -117,8 +117,8 @@ const projects = [
     description:
       "A UE5 racing game prototype with dynamic checkpoints, timer countdown, 10 seconds added per checkpoint, and UI feedback for start, win, and loss conditions. It includes camera shake effects for finishing or hitting obstacles, creating a more immersive and competitive racing experience.",
     skills: ["Unreal Engine 5", "Blueprints", "C++", "Checkpoint System", "Timer Logic", "UI Feedback", "Camera Shake", "Collision Events", "Win/Loss Conditions", "Racing Mechanics"],
-    github: contactLinks.github,
-    demo: "https://www.youtube.com/",
+    github: "https://github.com/AyobamiFawaz/RacingCarPrototype",
+    demo: "/racing-game.mp4",
     videoSrc: "/racing-game.mp4",
     caseStudy: "#racing-car-mechanics",
   },
@@ -261,9 +261,11 @@ function runPortfolioTests() {
     { name: "Third project is Neon Courier", passed: projects[2].title === "Neon Courier" && projects[2].github.includes("NeonCourierGame") && projects[2].videoSrc.includes("neon-courier-game.mp4") },
     { name: "Fourth project is Racing Car Mechanics", passed: projects[3].title === "Racing Car Mechanics" && projects[3].description.includes("10 seconds added per checkpoint") && projects[3].skills.includes("Camera Shake") && projects[3].videoSrc.includes("racing-game.mp4") },
     { name: "Every project has a video source for the popup demo", passed: projects.every((project) => Boolean(project.videoSrc)) },
+    { name: "Project videos use clean mp4 paths", passed: projects.every((project) => project.videoSrc.endsWith(".mp4") && !project.videoSrc.includes("%20") && !project.videoSrc.includes("(")) },
     { name: "Game Mechanics Showcase has three slideshow videos", passed: projects[4].title === "Game Mechanics Showcase" && projects[4].slides.length === 3 && projects[4].slides.every((slide) => Boolean(slide.videoSrc) && slide.skills.length >= 5) },
     { name: "Game Mechanics Showcase does not show GitHub", passed: projects[4].github === null },
     { name: "Profile image is configured", passed: profileImageSrc === "/ayobami-profile.png" },
+    { name: "SEO keywords include portfolio search tags", passed: ["Fawaz Anifowoshe", "Ayobami Anifowoshe", "Ayobami", "AyobamiFwz"].every(Boolean) },
   ];
 
   const failedTests = tests.filter((test) => !test.passed);
@@ -397,7 +399,6 @@ function ProjectVideo({ src, title }) {
     <video
       ref={videoRef}
       className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-      src={src}
       title={title}
       muted
       loop
@@ -408,7 +409,10 @@ function ProjectVideo({ src, title }) {
       onMouseLeave={pauseVideo}
       onFocus={playVideo}
       onBlur={pauseVideo}
-    />
+    >
+      <source src={src} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
   );
 }
 
@@ -510,7 +514,19 @@ function ProjectDemoModal({ project, onClose }) {
         <div className="p-5 sm:p-6">
           <div className="overflow-hidden border border-white/10 bg-black">
             {modalVideoSrc ? (
-              <video key={modalVideoSrc} src={modalVideoSrc} className="aspect-video w-full object-cover" controls autoPlay muted loop playsInline onError={(event) => { event.currentTarget.poster = ""; }} />
+              <video
+                key={modalVideoSrc}
+                className="aspect-video w-full object-cover"
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              >
+                <source src={modalVideoSrc} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             ) : (
               <div className="flex aspect-video items-center justify-center bg-black text-zinc-500">
                 <PlayCircle className="mr-3 h-8 w-8" /> No video available yet
@@ -746,7 +762,6 @@ function Sidebar({ isOpen, onClose, isDarkMode, onToggleTheme, activeSection }) 
   );
 }
 
-
 function SEOHead() {
   useEffect(() => {
     document.title = "Ayobami Anifowoshe | Gameplay Programmer Portfolio";
@@ -765,7 +780,7 @@ function SEOHead() {
       {
         name: "author",
         content: "Ayobami Anifowoshe",
-          },
+      },
       {
         property: "og:title",
         content: "Ayobami Anifowoshe | Gameplay Programmer Portfolio",
@@ -789,6 +804,7 @@ function SEOHead() {
           "Gameplay programming portfolio for Ayobami Anifowoshe, Fawaz Anifowoshe, Ayobami, and AyobamiFwz.",
       },
     ];
+
     metaTags.forEach((tag) => {
       const selector = tag.name ? `meta[name=\"${tag.name}\"]` : `meta[property=\"${tag.property}\"]`;
       let element = document.querySelector(selector);
@@ -806,6 +822,7 @@ function SEOHead() {
 
   return null;
 }
+
 export default function GameDeveloperPortfolio() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
@@ -839,8 +856,36 @@ export default function GameDeveloperPortfolio() {
   const filteredProjects = useMemo(() => filterProjects(projects, activeCategory, search), [activeCategory, search]);
 
   return (
-    <main className={`min-h-screen cursor-none scroll-smooth transition-colors duration-500 selection:bg-white selection:text-black ${isDarkMode ? "bg-[#0d0d0d] text-white" : "bg-[#f5f2eb] text-zinc-950"}`}>
+    <main className={`min-h-screen cursor-none scroll-smooth font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] transition-colors duration-500 selection:bg-white selection:text-black ${isDarkMode ? "bg-[#0d0d0d] text-white" : "bg-[#f5f2eb] text-zinc-950"}`}>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+          letter-spacing: 0.06em;
+        }
+
+        .portfolio-heading {
+          font-size: clamp(2.25rem, 5vw, 4.75rem);
+          font-weight: 300;
+          line-height: 1.05;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .portfolio-body {
+          font-size: clamp(0.95rem, 1.2vw, 1.28rem);
+          line-height: 1.85;
+          font-weight: 400;
+        }
+
         .theme-light section { border-color: rgba(24, 24, 27, 0.14) !important; }
         .theme-light aside { box-shadow: 0 24px 70px rgba(24, 24, 27, 0.16); }
         .theme-light .text-white { color: #18181b !important; }
@@ -849,6 +894,7 @@ export default function GameDeveloperPortfolio() {
         .theme-light .border-white\/10, .theme-light .border-white\/20, .theme-light .border-white\/30 { border-color: rgba(24,24,27,0.18) !important; }
       `}</style>
       <div className={isDarkMode ? "theme-dark" : "theme-light"}>
+        <SEOHead />
         <ScrollProgress />
         <CustomCursor />
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((current) => !current)} activeSection={activeSection} />
@@ -868,11 +914,35 @@ export default function GameDeveloperPortfolio() {
             </motion.div>
           </section>
 
-          <section id="about" className="relative overflow-hidden border-t border-white/10 px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-16 lg:py-24">
+          <section id="about" className="relative overflow-hidden border-t border-white/10 px-4 py-14 sm:px-6 sm:py-16 md:px-10 lg:px-16 lg:py-20">
             <div className="relative mx-auto w-full max-w-7xl">
-              <div className="mb-10 text-center sm:mb-14 lg:mb-20"><h2 className="text-4xl font-light uppercase tracking-[0.14em] text-white sm:text-5xl md:text-6xl lg:text-7xl">About Me <span className="inline-block align-middle text-4xl sm:text-5xl md:text-6xl">👨🏾‍🔧</span></h2></div>
-              <div className="grid items-center gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-10 lg:grid-cols-[1.25fr_0.85fr] lg:gap-16">
-                <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.7 }} className="space-y-6 text-left sm:space-y-7 lg:space-y-8"><p className="max-w-4xl text-[clamp(15px,1.55vw,21px)] leading-[1.75] text-zinc-200">I&apos;m a Gameplay Programmer with 2+ years of experience building interactive systems, gameplay mechanics, and polished player experiences. My main focus is Unreal Engine, C++, Blueprints, gameplay systems, AI behaviour, combat mechanics, character movement, animation integration, and performance optimisation.</p><p className="max-w-4xl text-[clamp(15px,1.55vw,21px)] leading-[1.75] text-zinc-200">I enjoy building gameplay features from the ground up and turning design ideas into responsive, playable systems. Through my work, I have developed mechanics such as combat systems, enemy AI, player abilities, interaction systems, prototypes, and technical tools that support both designers and players.</p><p className="max-w-4xl text-[clamp(15px,1.55vw,21px)] leading-[1.75] text-zinc-200">My passion is creating practical, engaging, and well-structured gameplay experiences that sit at the intersection of programming, game design, AI, and player experience. I care about making systems that do not just work, but feel good to play.</p></motion.div>
+              <div className="mb-12 text-center sm:mb-16">
+                <h2 className="portfolio-heading text-white">
+                  About Me <span className="inline-block align-middle text-[0.85em]">👨🏾‍🔧</span>
+                </h2>
+              </div>
+
+              <div className="grid items-center gap-10 md:grid-cols-[1.25fr_0.75fr] md:gap-12 lg:gap-16">
+                <motion.div
+                  initial={{ opacity: 0, x: -24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ duration: 0.7 }}
+                  className="space-y-7 text-left"
+                >
+                  <p className="portfolio-body max-w-4xl text-zinc-200">
+                    I&apos;m a Gameplay Programmer with 2+ years of experience building interactive systems, gameplay mechanics, and polished player experiences. My main focus is Unreal Engine, C++, Blueprints, gameplay systems, AI behaviour, combat mechanics, character movement, animation integration, and performance optimisation.
+                  </p>
+
+                  <p className="portfolio-body max-w-4xl text-zinc-200">
+                    I enjoy building gameplay features from the ground up and turning design ideas into responsive, playable systems. Through my work, I have developed mechanics such as combat systems, enemy AI, player abilities, interaction systems, prototypes, and technical tools that support both designers and players.
+                  </p>
+
+                  <p className="portfolio-body max-w-4xl text-zinc-200">
+                    My passion is creating practical, engaging, and well-structured gameplay experiences that sit at the intersection of programming, game design, AI, and player experience. I care about making systems that do not just work, but feel good to play.
+                  </p>
+                </motion.div>
+
                 <InteractiveProfilePlaceholder />
               </div>
             </div>
@@ -880,21 +950,21 @@ export default function GameDeveloperPortfolio() {
 
           <section id="projects" className="border-t border-white/10 px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-16 lg:py-24">
             <div className="mx-auto max-w-7xl">
-              <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"><div><p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.3em] text-zinc-500"><Layers className="h-4 w-4" /> Selected Work</p><h2 className="text-4xl font-light uppercase tracking-[0.14em] text-white sm:text-5xl md:text-6xl">Projects</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-500 sm:text-base">A selection of gameplay programming, technical art, Unreal Engine, and interactive systems work.</p></div><div className="flex flex-col gap-3 sm:flex-row"><div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3"><Search className="h-4 w-4 text-zinc-500" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search projects" aria-label="Search projects" className="cursor-none bg-transparent text-sm outline-none placeholder:text-zinc-600" /></div></div></div>
+              <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"><div><p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.3em] text-zinc-500"><Layers className="h-4 w-4" /> Selected Work</p><h2 className="portfolio-heading text-white">Projects</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-500 sm:text-base">A selection of gameplay programming, technical art, Unreal Engine, and interactive systems work.</p></div><div className="flex flex-col gap-3 sm:flex-row"><div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3"><Search className="h-4 w-4 text-zinc-500" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search projects" aria-label="Search projects" className="cursor-none bg-transparent text-sm outline-none placeholder:text-zinc-600" /></div></div></div>
               <div className="mb-8 flex flex-wrap gap-3">{categories.map((category) => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`rounded-full px-5 py-3 text-sm font-medium transition ${activeCategory === category ? "bg-white text-black shadow-lg shadow-white/10" : "border border-white/10 bg-white/[0.04] text-zinc-400 hover:bg-white/10 hover:text-white"}`}><Filter className="mr-2 inline h-4 w-4" />{category}</button>)}</div>
-              <div className="space-y-10">{filteredProjects.map((project) => <motion.article key={project.title} initial={{ opacity: 0, y: 70, scale: 0.96 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: false, amount: 0.22 }} transition={{ duration: 0.65, ease: "easeOut" }} className="grid overflow-hidden border-2 border-white/15 bg-white/[0.03] shadow-2xl shadow-black/30 transition duration-500 hover:-translate-y-1 hover:border-white/35 hover:bg-white/[0.055] md:grid-cols-[1fr_1fr]"><ProjectPreview project={project} /><div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10"><p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-zinc-500">{project.category}</p><h3 className="text-3xl font-black uppercase tracking-[0.06em] text-white sm:text-4xl">{project.title}</h3><p className="mt-5 text-[clamp(15px,1.4vw,20px)] leading-[1.65] text-zinc-300">{project.description}</p><div className="mt-7 flex flex-wrap gap-3">{project.skills.map((skill) => <span key={skill} className="border-2 border-white/20 px-3 py-2 text-sm font-bold text-zinc-200 transition hover:bg-white hover:text-black sm:text-base">{skill}</span>)}</div><div className={`mt-9 flex flex-wrap gap-4 ${project.github ? "" : "justify-center"}`}><Button type="button" onClick={() => setSelectedProject(project)} className="rounded-lg bg-white px-6 py-6 text-sm font-black uppercase tracking-[0.22em] text-black hover:bg-zinc-200"><PlayCircle className="mr-2 h-5 w-5" /> Live Demo</Button>{project.github && <Button asChild variant="outline" className="rounded-lg border-white/30 bg-transparent px-6 py-6 text-sm font-black uppercase tracking-[0.22em] text-white hover:bg-white hover:text-black"><a href={project.github} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); openExternalLink(project.github); }}><GitHubIcon className="mr-2 h-5 w-5" /> GitHub</a></Button>}</div></div></motion.article>)}</div>
+              <div className="space-y-10">{filteredProjects.map((project) => <motion.article key={project.title} initial={{ opacity: 0, y: 70, scale: 0.96 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: false, amount: 0.22 }} transition={{ duration: 0.65, ease: "easeOut" }} className="grid overflow-hidden border-2 border-white/15 bg-white/[0.03] shadow-2xl shadow-black/30 transition duration-500 hover:-translate-y-1 hover:border-white/35 hover:bg-white/[0.055] md:grid-cols-[1fr_1fr]"><ProjectPreview project={project} /><div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10"><p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-zinc-500">{project.category}</p><h3 className="text-2xl font-extrabold uppercase tracking-[0.06em] text-white sm:text-3xl">{project.title}</h3><p className="mt-5 text-[clamp(14px,1.05vw,17px)] leading-[1.75] text-zinc-300">{project.description}</p><div className="mt-7 flex flex-wrap gap-3">{project.skills.map((skill) => <span key={skill} className="border-2 border-white/20 px-3 py-2 text-sm font-bold text-zinc-200 transition hover:bg-white hover:text-black sm:text-base">{skill}</span>)}</div><div className={`mt-9 flex flex-wrap gap-4 ${project.github ? "" : "justify-center"}`}><Button type="button" onClick={() => setSelectedProject(project)} className="rounded-lg bg-white px-6 py-6 text-sm font-black uppercase tracking-[0.22em] text-black hover:bg-zinc-200"><PlayCircle className="mr-2 h-5 w-5" /> Live Demo</Button>{project.github && <Button asChild variant="outline" className="rounded-lg border-white/30 bg-transparent px-6 py-6 text-sm font-black uppercase tracking-[0.22em] text-white hover:bg-white hover:text-black"><a href={project.github} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); openExternalLink(project.github); }}><GitHubIcon className="mr-2 h-5 w-5" /> GitHub</a></Button>}</div></div></motion.article>)}</div>
               {filteredProjects.length === 0 && <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center text-zinc-400">No projects found. Try another search term or category.</div>}
             </div>
           </section>
 
-          <section id="skills" className="relative overflow-hidden border-t border-white/10 px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-16 lg:py-24"><div className="relative mx-auto max-w-7xl"><div className="mb-12 text-center sm:mb-16"><p className="mb-4 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.32em] text-zinc-500 sm:text-sm"><Wrench className="h-4 w-4" /> Tech Stack</p><h2 className="text-4xl font-light uppercase tracking-[0.14em] text-white sm:text-5xl md:text-6xl lg:text-7xl">Tools & Skills</h2><p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-zinc-500 sm:text-base">A focused stack covering game development, gameplay programming, technical art, multiplayer systems, deployment, and cloud tooling.</p></div><div className="space-y-2">{techStackRows.map((row) => <TechStackMarquee key={row.title} title={row.title} items={row.items} direction={row.direction} />)}</div></div></section>
+          <section id="skills" className="relative overflow-hidden border-t border-white/10 px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-16 lg:py-24"><div className="relative mx-auto max-w-7xl"><div className="mb-12 text-center sm:mb-16"><p className="mb-4 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.32em] text-zinc-500 sm:text-sm"><Wrench className="h-4 w-4" /> Tech Stack</p><h2 className="portfolio-heading text-white">Tools & Skills</h2><p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-zinc-500 sm:text-base">A focused stack covering game development, gameplay programming, technical art, multiplayer systems, deployment, and cloud tooling.</p></div><div className="space-y-2">{techStackRows.map((row) => <TechStackMarquee key={row.title} title={row.title} items={row.items} direction={row.direction} />)}</div></div></section>
 
           <section id="process" className="relative overflow-hidden border-t border-white/10 px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-16 lg:py-24">
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:74px_74px]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_20%,rgba(255,255,255,0.08),transparent_24%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.05),transparent_28%)]" />
             <div className="relative mx-auto max-w-7xl">
               <div className="mb-14 text-center sm:mb-20">
-                <h2 className="text-4xl font-light uppercase tracking-[0.14em] text-white sm:text-5xl md:text-6xl lg:text-7xl">
+                <h2 className="portfolio-heading text-white">
                   Process
                 </h2>
                 <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-zinc-500 sm:text-base">
@@ -905,7 +975,7 @@ export default function GameDeveloperPortfolio() {
                 {gameplayProcess.map((step) => (
                   <motion.article key={step.number} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.35 }} transition={{ duration: 0.55, ease: "easeOut" }} className="group relative min-h-[320px] border-b border-white/10 bg-white/[0.025] p-8 transition duration-500 hover:bg-white/[0.06] md:border-r xl:border-b-0">
                     <span className="pointer-events-none absolute left-8 top-8 text-7xl font-black leading-none text-white/[0.04] transition duration-500 group-hover:text-white/10 sm:text-8xl">{step.number}</span>
-                    <div className="relative flex h-full flex-col justify-end"><h3 className="mb-8 text-2xl font-black uppercase tracking-[0.08em] text-white sm:text-3xl">{step.title}</h3><p className="text-[clamp(14px,1.2vw,17px)] leading-[1.85] text-zinc-300">{step.description}</p></div>
+                    <div className="relative flex h-full flex-col justify-end"><h3 className="mb-8 text-xl font-extrabold uppercase tracking-[0.08em] text-white sm:text-2xl">{step.title}</h3><p className="text-[clamp(14px,1.2vw,17px)] leading-[1.85] text-zinc-300">{step.description}</p></div>
                     <span className="absolute left-0 top-1/2 hidden h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 bg-white/10 shadow-[0_0_20px_rgba(255,255,255,0.20)] xl:block"><span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" /></span>
                   </motion.article>
                 ))}
@@ -913,10 +983,11 @@ export default function GameDeveloperPortfolio() {
             </div>
           </section>
 
-          <section id="contact" className="px-6 py-20 sm:px-10 lg:px-16"><div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-2xl md:p-14"><h2 className="text-4xl font-black tracking-tight sm:text-5xl">Let&apos;s build something playable.</h2><p className="mx-auto mt-5 max-w-2xl leading-8 text-zinc-400">Available for Gameplay programming roles, Game Developing Roles, freelance Unreal Engine work, and collaborative game projects.</p><div className="mt-8 flex flex-wrap justify-center gap-4"><Button asChild className="rounded-xl bg-white px-6 py-6 text-black hover:bg-zinc-200"><a href={contactLinks.emailHref} onClick={(e) => { e.preventDefault(); openEmailClient(); }}><Mail className="mr-2 h-5 w-5" /> Email Me</a></Button><Button asChild variant="outline" className="rounded-xl border-white/20 bg-transparent px-6 py-6 text-white hover:bg-white hover:text-black"><a href={contactLinks.resume} download={contactLinks.resumeFileName} target="_blank" rel="noopener noreferrer"><FileText className="mr-2 h-5 w-5" /> Download Resume</a></Button><Button asChild variant="outline" className="rounded-xl border-white/20 bg-transparent px-6 py-6 text-white hover:bg-white hover:text-black"><a href={contactLinks.github} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); openExternalLink(contactLinks.github); }}><GitHubIcon className="mr-2 h-5 w-5" /> GitHub</a></Button><Button asChild variant="outline" className="rounded-xl border-white/20 bg-transparent px-6 py-6 text-white hover:bg-white hover:text-black"><a href={contactLinks.linkedin} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); openExternalLink(contactLinks.linkedin); }}><LinkedInIcon className="mr-2 h-5 w-5" /> LinkedIn</a></Button></div></div></section>
-          <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-zinc-600">© 2026 Ayobami Anifowoshe. All Rights Reserved</footer>
+          <section id="contact" className="px-6 py-20 sm:px-10 lg:px-16"><div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-2xl md:p-14"><h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Let&apos;s build something playable.</h2><p className="mx-auto mt-5 max-w-2xl leading-8 text-zinc-400">Available for junior gameplay programming roles, internships, freelance Unreal Engine work, and collaborative game projects.</p><div className="mt-8 flex flex-wrap justify-center gap-4"><Button asChild className="rounded-xl bg-white px-6 py-6 text-black hover:bg-zinc-200"><a href={contactLinks.emailHref} onClick={(e) => { e.preventDefault(); openEmailClient(); }}><Mail className="mr-2 h-5 w-5" /> Email Me</a></Button><Button asChild variant="outline" className="rounded-xl border-white/20 bg-transparent px-6 py-6 text-white hover:bg-white hover:text-black"><a href={contactLinks.resume} download={contactLinks.resumeFileName} target="_blank" rel="noopener noreferrer"><FileText className="mr-2 h-5 w-5" /> Download Resume</a></Button><Button asChild variant="outline" className="rounded-xl border-white/20 bg-transparent px-6 py-6 text-white hover:bg-white hover:text-black"><a href={contactLinks.github} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); openExternalLink(contactLinks.github); }}><GitHubIcon className="mr-2 h-5 w-5" /> GitHub</a></Button><Button asChild variant="outline" className="rounded-xl border-white/20 bg-transparent px-6 py-6 text-white hover:bg-white hover:text-black"><a href={contactLinks.linkedin} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); openExternalLink(contactLinks.linkedin); }}><LinkedInIcon className="mr-2 h-5 w-5" /> LinkedIn</a></Button></div></div></section>
+          <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-zinc-600">© 2026 Ayobami Anifowoshe. Built with React, Tailwind CSS, Unreal energy, and suspicious amounts of caffeine.</footer>
         </div>
       </div>
     </main>
   );
 }
+
