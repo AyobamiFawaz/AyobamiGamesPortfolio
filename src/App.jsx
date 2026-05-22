@@ -94,9 +94,7 @@ const projects = [
       "Debugging",
     ],
     github: "https://github.com/AyobamiFawaz/Gameplay_Systems",
-    demo: "/enemy-ai-weapon-equip.mp4",
-    videoSrc: "/enemy-ai-weapon-equip.mp4",
-    caseStudy: "#enemy-ai-weapon-equip",
+    demo: "/enemy-ai-weapon-equip.mp4",    caseStudy: "#enemy-ai-weapon-equip",
   },
   {
     title: "Neon Courier",
@@ -118,8 +116,8 @@ const projects = [
       "A UE5 racing game prototype with dynamic checkpoints, timer countdown, 10 seconds added per checkpoint, and UI feedback for start, win, and loss conditions. It includes camera shake effects for finishing or hitting obstacles, creating a more immersive and competitive racing experience.",
     skills: ["Unreal Engine 5", "Blueprints", "C++", "Checkpoint System", "Timer Logic", "UI Feedback", "Camera Shake", "Collision Events", "Win/Loss Conditions", "Racing Mechanics"],
     github: "https://github.com/AyobamiFawaz/RacingCarPrototype",
-    demo: "/racing-game.mp4",
-    videoSrc: "/racing-game.mp4",
+    demo: "/racinggame.mp4",
+    videoSrc: "/racinggame.mp4",
     caseStudy: "#racing-car-mechanics",
   },
   {
