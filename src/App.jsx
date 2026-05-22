@@ -94,7 +94,9 @@ const projects = [
       "Debugging",
     ],
     github: "https://github.com/AyobamiFawaz/Gameplay_Systems",
-    demo: "/enemy-ai-weapon-equip.mp4",    caseStudy: "#enemy-ai-weapon-equip",
+    demo: "/enemy-ai-weapon-equip.mp4",    
+    videoSrc: "/enemy-ai-weapon-equip.mp4",
+    caseStudy: "#enemy-ai-weapon-equip",
   },
   {
     title: "Neon Courier",
